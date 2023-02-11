@@ -1,3 +1,56 @@
+# Novo 
+
+ npm create vite@latest
+
+Need to install the following packages:
+  create-vite@4.1.0
+Ok to proceed? (y) y
+✔ Project name: … react_sass_dashboard
+✔ Select a framework: › Vanilla
+✔ Select a variant: › JavaScript
+
+Scaffolding project in /home/apfurlan/PPJ_react_dashboard/react_sass_dashboard...
+
+Done. Now run:
+
+  cd react_sass_dashboard
+  npm install
+  npm run dev
+
+
+cd react_sass_dashboard/
+/home/apfurlan/PPJ_react_dashboard/react_sass_dashboard
+react_sass_dashboard/ (main) $ npm install 
+
+added 14 packages, and audited 15 packages in 5s
+
+4 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+npm install -D sass
+
+added 16 packages, and audited 31 packages in 3s
+
+6 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+npm install react-icons
+
+added 4 packages, and audited 35 packages in 3s
+
+6 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+---
+
 # Masterclass parte 2 
 
 (https://www.youtube.com/watch?v=GJ8Vm-h0V8I)
