@@ -35,8 +35,6 @@ npm install -D sass
 added 16 packages, and audited 31 packages in 3s
 
 6 packages are looking for funding
-  run `npm fund` for details
-
 found 0 vulnerabilities
 
 
