@@ -86,10 +86,22 @@ def gitAddAll(owner,repo_name,token=None): #, file_path, branch="main"):
                 return
 
     # Crie um novo commit com as mudanças
+    # Get the current file content (for obtaining the SHA hash)
+    api_url = 'https://api.github.com/repos/{owner}/{repo_name}/contents/'    
+    response = requests.get(api_url, headers=headers)
+    data = response.json()
+    current_sha = data['sha']
+
+
+
+
+    aaa ="dadwadaw"
     data = {
         "message": "Adicionando mudanças via API do GitHub",
+        "content" :  base64.b64encode(aaa.encode()).decode(),
         "parents": [branch],
-        "tree": changes
+        "tree": changes,
+        "sha" : data["sha"]
     }
 
     create_commit_url = f"{base_url}/repos/{owner}/{repo_name}/git/commits"
@@ -125,3 +137,28 @@ file_path_to_add = ""
 gitAddAll(username,repository,token)
 
 print(files)
+
+# %%
+
+import json
+import yaml
+import os 
+from gitManage import gitManage
+
+
+home = os.path.expanduser('~') 
+with open(f"{home}/my_github_pas.yaml", 'r') as file:
+    data = yaml.safe_load(file)
+
+username   = data["gitrepos"]["repo_owner"]
+repository = data["gitrepos"]["repo_name"]
+token      = data["gitrepos"]["personal_access_token"]["key2"]
+
+githubrepo = gitManage(username,repository,token) 
+
+#tkn = githubrepo.get_token()\
+aa = githubrepo.get_branches()
+bb = githubrepo.get_files()
+print(aa)
+print("----------")
+print(bb)

@@ -1,80 +1,78 @@
 #gitManage.py
 import requests
 
-class gitManage() : 
+class gitManage : 
 
-#     # username = "apfurlan"
-#     # repository = "PPJ_react_dashboard"
-#     # token = None
-
-# def __init__(self,username,repository,token=None) -> None:
+    def __init__(self,username,repository,token) :
     
-#     username = username
-#     repository = repository
-#     token = token
+        self.__username   = username
+        self.__repository = repository
+        self.__token      = token
 
-#     return 
+# =============== listBranches _==============================
+    def list_branches(self):
 
-# #     listBranches
-
-def getBranches(username,repository,token=None):
-
-    base_url = "https://api.github.com"
-    endpoint = f"/repos/{username}/{repository}/branches"
-    headers = {
-        "Authorization": f"Bearer {token}"
-    } if token else {}
-    url = f"{base_url}{endpoint}"
-
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        branches = [] #response.json()
-        for branch in response.json() : 
-            branches.append(branch["name"])
-        return branches
-    
-
-    except requests.exceptions.RequestException as e:
-        print("Erro na requisição:", e)
-        return None
-    except ValueError as e:
-        print("Erro de decodificação JSON:", e)
-        return None
-
-# ===============================================================
-def getFiles(username,repository,token=None):
-    base_url = "https://api.github.com"
-    endpoint = f"/repos/{username}/{repository}/contents/"
-    #endpoint = f"/repos/{username}/{repository}/contents/{filepath=""}"
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    url = f"{base_url}{endpoint}"
-
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        content_info = response.json()
-        print(response.status_code)
-
-        if response.status_code == 200 :
-            files = []
-            for i_file in content_info : 
-                files.append(i_file["name"])
+        base_url = "https://api.github.com"
+        endpoint = f"/repos/{self.__username}/{self.__repository}/branches"
+        print(self.__token)
         
-            return files
-        else:
-            print("Arquivo não encontrado.")
+        headers = {}
+        if self.__token :
+            headers["Authorization"] = f"Bearer {self.__token}"
+        
+        url = f"{base_url}{endpoint}"
+        print(url)
+        try:
+            response = requests.get(url, headers=headers)
+            print(response.json())
+            response.raise_for_status()
+            branches = [ branch["name"] for branch in response.json() ]
+        
+            return branches
+
+        except requests.exceptions.RequestException as e:
+            print("Erro na requisição:", e)
+            return None
+        except ValueError as e:
+            print("Erro de decodificação JSON:", e)
             return None
 
-    except requests.exceptions.RequestException as e:
-        print("Erro na requisição:", e)
-        return None
-    except ValueError as e:
-        print("Erro de decodificação JSON:", e)
-        return None
-    except Exception as e:
-        print("Erro desconhecido:", e)
-        return None
+# ====================== Get Content File =========================================
+    def list_files(self):
+        base_url = "https://api.github.com"
+        endpoint = f"/repos/{self.__username}/{self.__repository}/contents/"
+        #endpoint = f"/repos/{username}/{repository}/contents/{filepath=""}"
+
+        headers = {}
+        if self.__token :
+            headers["Authorization"] = f"Bearer {self.__token}"
+
+        url = f"{base_url}{endpoint}"
+
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            content_info = response.json()
+
+            if response.status_code == 200 :
+                files = []
+                for i_file in content_info : 
+                    files.append(i_file["name"])
+            
+                return files
+            else:
+                print("File not found")
+                return None
+
+        except requests.exceptions.RequestException as e:
+            print("Request Error:", e)
+            return None
+        except ValueError as e:
+            print("JSON decod Error:", e)
+            return None
+        except Exception as e:
+            print("Unknown Error:", e)
+            return None
         
 
 
