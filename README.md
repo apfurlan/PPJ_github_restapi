@@ -1,1 +1,4 @@
-I'm testing git automation
+
+    # Git Automation Repository
+
+    This README.md was written by Github Automation
