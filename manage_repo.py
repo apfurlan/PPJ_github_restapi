@@ -143,7 +143,9 @@ print(files)
 import json
 import yaml
 import os 
+import datetime
 from gitManage import gitManage
+import random
 
 
 home = os.path.expanduser('~') 
@@ -153,12 +155,43 @@ with open(f"{home}/my_github_pas.yaml", 'r') as file:
 username   = data["gitrepos"]["repo_owner"]
 repository = data["gitrepos"]["repo_name"]
 token      = data["gitrepos"]["personal_access_token"]["key2"]
+filepath   = f"README.md"
 
-githubrepo = gitManage(username,repository,token) 
+rn = print(random.randint(0,100))
 
-#tkn = githubrepo.get_token()\
-aa = githubrepo.get_branches()
-bb = githubrepo.get_files()
-print(aa)
-print("----------")
-print(bb)
+
+new_file_path = "README.md"
+new_file_content = f"""
+    # Git Automation Repository
+
+    This README.md was written by Github Automation {rn} 
+"""
+commit_message = f"automated commit {rn}"
+
+parent_commit_sha = base_tree_sha
+
+githubrepo = gitManage(username,repository
+                       ,token,filepath,base_tree_sha
+                       ,new_file_path,new_file_content
+                       ,commit_message) 
+
+current_timestamp = datetime.datetime.now()
+day   = current_timestamp.day
+month = str('{:02}'.format(current_timestamp.month))
+year  = str(current_timestamp.year)[2:]
+branch_name = f"SB/{day}{month}{year}"
+
+print(githubrepo.get_branch_sha("main"))
+
+new_branch_sha    = githubrepo.post_create_new_branch(branch_name)
+new_tree_sha      = githubrepo.create_tree_with_all_files(new_branch_sha)
+parent_commit_sha = new_branch_sha
+new_commit_sha    = githubrepo.post_create_commit(new_tree_sha,parent_commit_sha)
+
+current_timestamp = datetime.datetime.now()
+day   = current_timestamp.day
+month = str('{:02}'.format(current_timestamp.month))
+year  = str(current_timestamp.year)[2:]
+branch_name = f"[SB-{day}{month}{year}]"
+
+githubrepo.patch_update_branch_reference(branch_name,new_commit_sha)
